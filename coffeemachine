@@ -1,0 +1,79 @@
+menu={
+    "latte":{  
+        "ingredients":{
+        "water":200,
+        "milk":150,
+        "coffee":24,
+        },
+        "cost":150
+        },
+    "espresso":{
+        "ingredients":{
+            "water":50,
+            "coffee":18
+            },
+        "cost":100
+        },
+        "cappuccino":{
+            "ingredients":{
+            "water":250,
+            "milk":100,
+            "coffee":24
+            },
+        "cost":200
+        },
+    }
+def check_resources(order_ingredients):
+    for item in order_ingredients:
+        if order_ingredients[item]>resources[item]:
+              print(f"Sorry there is not enough {item}")
+              return False
+    return True
+
+profit=0
+def process_coins():
+      total=0
+      print("please insert coins")
+      five_coins=int(input("How mant 5Rs. coins:"))
+      ten_coins=int(input("How many 10Rs.coins:"))
+      twenty_coins=int(input("How many 20Rs. coins"))
+      total=(5*five_coins)+(10*ten_coins)+(20*twenty_coins)
+      return total
+def is_payment_successful(payment_received,cost_coffee):
+    if(payment_received>=cost_coffee):
+        global profit
+        profit=profit+cost_coffee
+        change=payment_received-cost_coffee
+        print(f"Here your change in Rs{change}")
+        return True
+    else:
+        print("Sorry you dont have enough money")
+        return False
+     
+
+resources={
+    "water":500,
+    "milk":200,
+    "coffee":100
+    }
+def make_coffee(coffee_name,order_ingredients):
+    for item in order_ingredients:
+        resources[item]-=order_ingredients[item]
+    print(f"Here is your {coffee_name} Enjoy...")
+end_coffee_shop=True
+while end_coffee_shop:     
+     coffee=input("What would you like to have? (latte/espresso/cappuccino):")
+     if coffee=="off":
+         end_coffee_shop=False
+     elif coffee=="report":
+         print(f"Water={resources['water']}ml")
+         print(f"Water={resources['milk']}ml")
+         print(f"Water={resources['coffee']}ml")
+         print(f"Money=Rs{profit}")
+     else:
+         coffee_type=menu[coffee]
+         if check_resources(coffee_type['ingredients']):
+            payment=process_coins()
+            is_payment_successful(payment,coffee_type['cost'])
+            make_coffee(coffee,coffee_type['ingredients'])
+
